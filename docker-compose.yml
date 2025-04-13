@@ -1,0 +1,26 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: NovaSenha
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://user:NovaSenha:5432/mydb"
+      JWT_SECRET: "jwt123"
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:
